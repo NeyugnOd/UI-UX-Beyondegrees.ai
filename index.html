@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BeyonDegrees.ai — UI/UX Dashboard</title>
+  <link rel="stylesheet" href="./styles/tokens.css">
+  <link rel="stylesheet" href="./styles/base.css">
+  <link rel="stylesheet" href="./styles/components.css">
+  <link rel="stylesheet" href="./styles/animations.css">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      gap: var(--space-6);
+    }
+
+    .header-container {
+      background: linear-gradient(135deg, var(--violet-700) 0%, var(--violet-900) 100%);
+      padding: var(--space-12) var(--space-6);
+      text-align: center;
+      border-bottom: 1px solid var(--neutral-700);
+    }
+
+    .header-container h1 {
+      font-size: 32px;
+      margin-bottom: var(--space-2);
+      background: linear-gradient(135deg, #fff 0%, var(--violet-300) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-meta {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-6);
+      flex-wrap: wrap;
+      color: var(--text-secondary);
+      font-size: var(--text-sm-size);
+      margin-top: var(--space-4);
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .progress-indicator {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-4);
+      background: var(--bg-surface);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-sm-size);
+      font-weight: var(--fw-semibold);
+      color: var(--mint-500);
+    }
+
+    .main-content {
+      flex: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 var(--space-6) var(--space-12);
+    }
+
+    .section {
+      margin-bottom: var(--space-16);
+    }
+
+    .section-header {
+      margin-bottom: var(--space-8);
+    }
+
+    .section-title {
+      font-size: 28px;
+      font-weight: var(--fw-bold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-4);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 28px;
+      background: var(--violet-600);
+      border-radius: 2px;
+    }
+
+    .section-title.mint::before {
+      background: var(--mint-500);
+    }
+
+    .section-description {
+      color: var(--text-muted);
+      font-size: var(--text-sm-size);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-6);
+    }
+
+    .project-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--neutral-700);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      transition: all var(--transition-base);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--violet-600);
+    }
+
+    .project-card.mint::before {
+      background: linear-gradient(90deg, var(--mint-500), var(--mint-400));
+    }
+
+    .project-card:hover {
+      border-color: var(--violet-500);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-violet);
+    }
+
+    .project-card.mint:hover {
+      border-color: var(--mint-500);
+      box-shadow: var(--shadow-mint);
+    }
+
+    .card-icon {
+      font-size: 32px;
+      height: 48px;
+      width: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-4);
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: var(--fw-bold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+    }
+
+    .card-description {
+      color: var(--text-secondary);
+      font-size: var(--text-sm-size);
+      line-height: var(--lh-relaxed);
+      flex: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--neutral-700);
+      gap: var(--space-3);
+    }
+
+    .file-count {
+      font-size: var(--text-caption-size);
+      color: var(--text-muted);
+    }
+
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-4);
+      color: var(--violet-400);
+      text-decoration: none;
+      font-weight: var(--fw-semibold);
+      font-size: var(--text-sm-size);
+      transition: all var(--transition-fast);
+      border-radius: var(--radius-md);
+    }
+
+    .card-link:hover {
+      background: rgba(124, 58, 237, 0.1);
+      color: var(--violet-300);
+      gap: var(--space-3);
+    }
+
+    .card-link.mint {
+      color: var(--mint-500);
+    }
+
+    .card-link.mint:hover {
+      background: rgba(6, 214, 160, 0.1);
+      color: var(--mint-400);
+    }
+
+    .footer {
+      background: var(--bg-surface);
+      border-top: 1px solid var(--neutral-700);
+      padding: var(--space-8) var(--space-6);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: var(--text-sm-size);
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-6);
+      margin-bottom: var(--space-4);
+    }
+
+    .footer-link {
+      color: var(--violet-400);
+      text-decoration: none;
+      transition: color var(--transition-fast);
+    }
+
+    .footer-link:hover {
+      color: var(--violet-300);
+    }
+
+    @media (max-width: 768px) {
+      .header-container {
+        padding: var(--space-8) var(--space-4);
+      }
+
+      .header-container h1 {
+        font-size: 24px;
+      }
+
+      .header-meta {
+        flex-direction: column;
+        gap: var(--space-3);
+      }
+
+      .cards-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+      }
+
+      .section-title {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header-container">
+    <h1>BeyonDegrees.ai</h1>
+  </header>
+
+  <main class="main-content">
+    <!-- DESIGN SYSTEM SECTION -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Design System</h2>
+        <p class="section-description">Foundation layers, color scales, typography, and component library</p>
+      </div>
+      <div class="cards-grid">
+        <!-- Color Palette -->
+        <div class="project-card">
+          <div class="card-header">
+            <div class="card-icon">🎨</div>
+            <div style="flex: 1;">
+              <h3 class="card-title">Color Palette</h3>
+              <p class="card-description">Complete color scales with semantic tokens, accessibility checks, and brand colors</p>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="file-count">Primary color system</span>
+            <a href="./pages/design-system/color-palette.html" class="card-link">
+              Mở file <span style="font-size: 16px;">→</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Typography & Spacing -->
+        <div class="project-card">
+          <div class="card-header">
+            <div class="card-icon">✏️</div>
+            <div style="flex: 1;">
+              <h3 class="card-title">Typography & Spacing</h3>
+              <p class="card-description">Type scale, font weights, line heights, and 4pt grid spacing system</p>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="file-count">Plus Jakarta Sans</span>
+            <a href="./pages/design-system/typography-spacing.html" class="card-link">
+              Mở file <span style="font-size: 16px;">→</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Component Library -->
+        <div class="project-card">
+          <div class="card-header">
+            <div class="card-icon">🧩</div>
+            <div style="flex: 1;">
+              <h3 class="card-title">Component Library</h3>
+              <p class="card-description">Buttons, chips, cards, badges, and interactive UI components with states</p>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="file-count">20+ components</span>
+            <a href="./pages/design-system/component-library.html" class="card-link">
+              Mở file <span style="font-size: 16px;">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HI-FI SCREENS SECTION -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title mint">Hi-Fi Prototypes</h2>
+        <p class="section-description">Interactive screen designs and flow demonstrations</p>
+      </div>
+      <div class="cards-grid">
+        <!-- Home Screen -->
+        <div class="project-card mint">
+          <div class="card-header">
+            <div class="card-icon">🏠</div>
+            <div style="flex: 1;">
+              <h3 class="card-title">Home Screen</h3>
+              <p class="card-description">Welcome flow with hero section, discipline cards, and call-to-action buttons</p>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="file-count">Mobile viewport</span>
+            <a href="./pages/screens/home-screen.html" class="card-link mint">
+              Mở file <span style="font-size: 16px;">→</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Quiz Card -->
+        <div class="project-card mint">
+          <div class="card-header">
+            <div class="card-icon">📱</div>
+            <div style="flex: 1;">
+              <h3 class="card-title">Quiz Card Flow</h3>
+              <p class="card-description">Interactive quiz card with swipe gestures, scoring, and visual feedback</p>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="file-count">Gesture interactions</span>
+            <a href="./pages/screens/quiz-card.html" class="card-link mint">
+              Mở file <span style="font-size: 16px;">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="#" class="footer-link">Documentation</a>
+      <a href="#" class="footer-link">GitHub</a>
+      <a href="#" class="footer-link">Figma</a>
+    </div>
+    <p>BeyonDegrees.ai Frontend — Vanilla HTML/CSS/JS · Live Server Ready</p>
+  </footer>
+
+  <script src="./scripts/utils.js"></script>
+  <script src="./scripts/navigation.js"></script>
+</body>
+</html>

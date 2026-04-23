@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Card — BeyonDegrees.ai</title>
+  <link rel="stylesheet" href="../../styles/tokens.css">
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/components.css">
+  <link rel="stylesheet" href="../../styles/animations.css">
+  <link rel="stylesheet" href="./quiz-card.css">
+</head>
+<body>
+  <nav class="breadcrumb-bar">
+    <a href="../../index.html">BeyonDegrees-UI</a>
+    <span>/</span><a href="#">Screens</a>
+    <span>/</span><span class="active">Quiz Card</span>
+  </nav>
+
+  <div class="page-layout page-layout--centered">
+
+    <!-- DEVICE FRAME -->
+    <div class="device-wrapper" id="deviceWrapper">
+      <div class="device-frame" id="deviceFrame">
+        <div class="device-notch"></div>
+
+        <div class="mobile-screen" id="mobileScreen">
+
+          <!-- ░░ MESH GRADIENT BACKGROUND (z-index: 0) ░░ -->
+          <div class="aurora-bg" id="auroraBg">
+            <div class="blob blob-1" id="blob1"></div>
+            <div class="blob blob-2" id="blob2"></div>
+            <div class="blob blob-3" id="blob3"></div>
+            <div class="blob blob-4" id="blob4"></div>
+            <!-- Discipline ambient layers -->
+            <div class="disc-pattern" id="discPattern"></div>
+            <div class="disc-watermark" id="discWatermark">💻</div>
+            <div class="noise-overlay"></div>
+          </div>
+
+          <!-- Status Bar -->
+          <div class="status-bar">
+            <span class="status-time">9:41</span>
+            <div class="status-right"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+          </div>
+
+          <!-- Quiz Header -->
+          <header class="quiz-header">
+            <div class="header-top">
+              <button class="undo-btn" id="undoBtn" title="Hoàn tác">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M3 7v6h6"/><path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"/>
+                </svg>
+              </button>
+              <div class="counter-wrap">
+                <span class="counter-current" id="counterCurrent">1</span>
+                <span class="counter-sep">/</span>
+                <span class="counter-total">30</span>
+              </div>
+              <div class="mode-indicator" id="modeIndicator">
+                <span class="mode-dot"></span>
+                <span class="mode-label">Swipe</span>
+              </div>
+            </div>
+            <div class="story-bar" id="storyBar"></div>
+            <div class="score-row">
+              <div class="score-chip agree"><span>&#x2713;</span><span id="agreeCount">0</span></div>
+              <div class="score-chip strong"><span>&#x26A1;</span><span id="strongCount">0</span></div>
+              <div class="score-chip neutral"><span>&ndash;</span><span id="neutralCount">0</span></div>
+              <div class="score-chip disagree"><span>&#x2715;</span><span id="disagreeCount">0</span></div>
+            </div>
+          </header>
+
+          <!-- Card Arena -->
+          <div class="card-arena" id="cardArena">
+
+            <!-- Direction hints -->
+            <div class="dir-hint hint-right" id="hintRight">ĐỒNG Ý &#x2713;</div>
+            <div class="dir-hint hint-left"  id="hintLeft">KHÔNG &#x2715;</div>
+            <div class="dir-hint hint-up"    id="hintUp">RẤT ĐỒNG Ý &#x26A1;</div>
+            <div class="dir-hint hint-down"  id="hintDown">TRUNG LẬP &ndash;</div>
+
+            <!-- Discipline label -->
+            <div class="disc-label" id="discLabel"></div>
+
+            <!-- Card Stack -->
+            <div class="card-stack">
+              <div class="q-card back-2" id="backCard2">
+                <div class="card-inner"><div class="card-placeholder">&#x25CF;&#x25CF;&#x25CF;</div></div>
+              </div>
+              <div class="q-card back-1" id="backCard1">
+                <div class="card-inner"><div class="card-placeholder">&#x25CF;&#x25CF;&#x25CF;</div></div>
+              </div>
+              <div class="q-card active-card" id="activeCard">
+                <div class="drag-overlay" id="dragOverlay"></div>
+                <div class="card-inner">
+                  <div class="card-top-row">
+                    <span class="discipline-tag" id="disciplineTag">&#x26A1; Kỹ thuật</span>
+                    <span class="q-number" id="qNumber">01</span>
+                  </div>
+                  <p class="q-text" id="qText">Tôi thích giải quyết vấn đề bằng cách phân tích dữ liệu.</p>
+
+                  <!-- Spectrum mode -->
+                  <div class="spectrum-wrap" id="spectrumWrap">
+                    <div class="spectrum-labels">
+                      <span class="spec-label-left">Không đồng ý</span>
+                      <span class="spec-label-right">Đồng ý</span>
+                    </div>
+                    <div class="spectrum-track" id="spectrumTrack">
+                      <div class="spectrum-thumb" id="spectrumThumb"></div>
+                    </div>
+                    <div class="spectrum-value-label" id="spectrumValueLabel">Trung lập</div>
+                    <button class="spectrum-confirm-btn" id="spectrumConfirmBtn">Xác nhận &#x2713;</button>
+                  </div>
+
+                  <!-- Swipe hint -->
+                  <div class="swipe-hint" id="swipeHint">
+                    <span>Kéo để trả lời</span>
+                    <span class="hint-arrows">&#x2190; &#x2192;</span>
+                    <span class="hint-hold">Giữ để chọn mức độ</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Milestone overlay -->
+            <div class="milestone-overlay" id="milestoneOverlay">
+              <div class="milestone-content">
+                <div class="milestone-emoji" id="milestoneEmoji">&#x1F525;</div>
+                <div class="milestone-text" id="milestoneText">1/3 xong rồi!</div>
+                <div class="milestone-sub" id="milestoneSub">Tiếp tục nhe</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ░░ GLASSMORPHISM FLOATING TAB BAR — BeyonDegrees flow ░░ -->
+          <nav class="float-tab-bar" id="floatTabBar">
+
+            <!-- 1. About me — person + sparkle -->
+            <a href="../screens/home-screen.html" class="tab-item" data-tab="about">
+              <span class="tab-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="8" r="3.5"/>
+                  <path d="M4 21c0-3.5 3.1-6 7-6s7 2.5 7 6"/>
+                  <path d="M19 2l.45 1.35L20.8 3.8l-1.35.45L19 5.6l-.45-1.35L17.2 3.8l1.35-.45z" fill="currentColor" stroke="none"/>
+                </svg>
+              </span>
+              <span class="tab-label">About me</span>
+            </a>
+
+            <!-- 2. Disciplines (active) — compass -->
+            <a href="../screens/quiz-card.html" class="tab-item active" data-tab="disciplines">
+              <span class="tab-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="9"/>
+                  <polygon points="16.24,7.76 14.12,14.12 7.76,16.24 9.88,9.88" stroke="none" fill="currentColor" opacity="0.6"/>
+                  <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/>
+                </svg>
+              </span>
+              <span class="tab-label">Disciplines</span>
+            </a>
+
+            <!-- 3. Majors -->
+            <a href="#" class="tab-item tab-disabled" data-tab="majors">
+              <span class="tab-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                  <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
+              </span>
+              <span class="tab-label">Majors</span>
+            </a>
+
+            <!-- 4. Universities -->
+            <a href="#" class="tab-item tab-disabled" data-tab="universities">
+              <span class="tab-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/>
+                </svg>
+              </span>
+              <span class="tab-label">Universities</span>
+            </a>
+
+            <!-- 5. Hoàng Phúc -->
+            <a href="#" class="tab-item tab-disabled" data-tab="account">
+              <span class="tab-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="7.5" r="3.5"/>
+                  <path d="M4.5 20.5c0-3.5 3.4-6.5 7.5-6.5s7.5 3 7.5 6.5"/>
+                  <circle cx="19" cy="5" r="2.5" fill="currentColor" stroke="none" opacity="0.9"/>
+                  <path d="M18 5l.7.7 1.3-1.4" stroke="var(--bg-base,#06060f)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <span class="tab-label">Hoàng Phúc</span>
+            </a>
+
+          </nav>
+
+        </div><!-- /mobile-screen -->
+      </div><!-- /device-frame -->
+    </div>
+
+  </div>
+
+  <div class="bd-toast" id="bdToast"></div>
+
+  <script src="../../scripts/utils.js"></script>
+  <script src="../../scripts/navigation.js"></script>
+  <script src="./quiz-card.js"></script>
+</body>
+</html>
