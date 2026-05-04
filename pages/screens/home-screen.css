@@ -1,30 +1,15 @@
 /* ═══════════════════════════════════════════════════
    HOME SCREEN — Glassmorphism + Aurora
+   Shared shell (device, aurora, tab bar) → layout.css
+   Overrides: blob sizes 300/260/220/180, border-radius 48px
    ═══════════════════════════════════════════════════ */
-
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
 
 .breadcrumb {
   background: var(--bg-surface);
   border-bottom: 1px solid var(--neutral-700);
 }
 
-/* ── Desktop wrapper ── */
-.desktop-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  flex: 1;
-  padding: 20px;
-  background: var(--bg-base);
-}
-
-/* ── Phone frame ── */
+/* ── Phone frame override (48px vs layout.css 52px) ── */
 .device-frame {
   width: 390px;
   height: 844px;
@@ -51,7 +36,7 @@ body {
   z-index: 100;
 }
 
-/* ── Mobile viewport — aurora container ── */
+/* ── Mobile viewport — scrollable aurora container ── */
 .mobile-viewport {
   flex: 1;
   overflow-y: auto;
@@ -67,7 +52,7 @@ body {
 .mobile-viewport::-webkit-scrollbar { display: none; }
 
 /* ═══════════════════════════════════════════════════
-   AURORA MESH GRADIENT BACKGROUND
+   AURORA — blob size overrides (300/260/220/180px)
    ═══════════════════════════════════════════════════ */
 .aurora-bg {
   position: absolute;
@@ -109,6 +94,7 @@ body {
   animation: blobDrift4 52s ease-in-out infinite;
 }
 
+/* Home uses richer 4-stop keyframes (override layout.css 3-stop) */
 @keyframes blobDrift1 {
   0%,100% { transform: translate(0,0) scale(1); }
   25%     { transform: translate(80px,50px) scale(1.08); }
@@ -132,13 +118,6 @@ body {
   70%     { transform: translate(30px,-30px) scale(0.9); }
 }
 
-.noise-overlay {
-  position: absolute; inset: 0; pointer-events: none;
-  opacity: 0.032;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 180px 180px;
-}
-
 /* All foreground content above aurora */
 .status-bar,
 .mobile-header,
@@ -149,22 +128,6 @@ body {
   position: relative;
   z-index: 1;
 }
-
-/* ═══════════════════════════════════════════════════
-   STATUS BAR
-   ═══════════════════════════════════════════════════ */
-.status-bar {
-  padding: 10px 20px 6px;
-  margin-top: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 11px;
-  font-weight: 600;
-  color: rgba(248,250,252,0.7);
-  background: transparent;
-}
-.status-icons { display: flex; gap: 6px; }
 
 /* ═══════════════════════════════════════════════════
    HEADER — glass strip
@@ -198,7 +161,7 @@ body {
    ═══════════════════════════════════════════════════ */
 .hero-section {
   margin: 14px 14px 0;
-  padding: 28px 20px 24px;
+  padding: 16px 20px 18px;
   border-radius: 22px;
   background: rgba(255,255,255,0.06);
   backdrop-filter: blur(24px) saturate(160%);
@@ -208,9 +171,12 @@ body {
   text-align: center;
   overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Subtle inner glow */
 .hero-section::before {
   content: '';
   position: absolute;
@@ -219,14 +185,20 @@ body {
   background: linear-gradient(90deg, transparent, rgba(167,139,250,0.5), transparent);
 }
 
-.hero-gradient { display: none; } /* replaced by aurora */
-
-.hero-content { position: relative; z-index: 1; }
+.hero-gradient { display: none; }
+.hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
 
 .hero-emoji {
   font-size: 44px;
   display: block;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
   filter: drop-shadow(0 4px 12px rgba(124,58,237,0.4));
 }
 
@@ -269,7 +241,6 @@ body {
   gap: 10px;
 }
 
-/* Glass discipline card */
 .discipline-card {
   background: rgba(255,255,255,0.06);
   backdrop-filter: blur(16px) saturate(140%);
@@ -323,7 +294,6 @@ body {
   gap: 10px;
 }
 
-/* Glass override for btn-secondary */
 .cta-section .btn-secondary {
   background: rgba(255,255,255,0.07);
   backdrop-filter: blur(12px);
@@ -334,72 +304,6 @@ body {
   background: rgba(255,255,255,0.12);
   color: white;
 }
-
-/* ═══════════════════════════════════════════════════
-   GLASS FLOATING TAB BAR
-   ═══════════════════════════════════════════════════ */
-.float-tab-bar {
-  display: flex; align-items: center; justify-content: space-between;
-  margin: 0 10px 12px;
-  padding: 5px 5px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.06);
-  backdrop-filter: blur(32px) saturate(200%);
-  -webkit-backdrop-filter: blur(32px) saturate(200%);
-  border: 1px solid rgba(255,255,255,0.10);
-  box-shadow:
-    0 8px 32px rgba(0,0,0,0.35),
-    0 1px 0 rgba(255,255,255,0.08) inset;
-  z-index: 10;
-}
-
-/* Each tab item */
-.tab-item {
-  display: flex; flex-direction: column; align-items: center; gap: 3px;
-  padding: 7px 8px; border-radius: 999px;
-  text-decoration: none !important;
-  color: rgba(255,255,255,0.35);
-  transition:
-    background 0.3s cubic-bezier(0.34,1.3,0.64,1),
-    color 0.2s ease;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  white-space: nowrap;
-  flex-shrink: 0;
-  outline: none;
-}
-.tab-item:hover,
-.tab-item:hover:not(.tab-disabled) {
-  color: rgba(255,255,255,0.65);
-  text-decoration: none !important;
-}
-
-/* Active: glass white pill — no orange */
-.tab-item.active {
-  background: rgba(255,255,255,0.13);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  color: #ffffff;
-  border: 1px solid rgba(255,255,255,0.16);
-  box-shadow: 0 1px 0 rgba(255,255,255,0.1) inset;
-}
-
-/* Press feedback */
-.tab-item:active:not(.tab-disabled) { transform: scale(0.92); }
-
-.tab-icon {
-  display: flex; align-items: center; justify-content: center;
-  width: 20px; height: 20px;
-}
-.tab-icon svg { transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); }
-.tab-item.active .tab-icon svg { transform: scale(1.1); }
-
-.tab-label {
-  font-size: 9px; font-weight: 700; letter-spacing: 0.1px;
-  line-height: 1; white-space: nowrap;
-}
-
-.tab-disabled { opacity: 0.25; cursor: not-allowed; pointer-events: none; }
 
 /* ═══════════════════════════════════════════════════
    RESPONSIVE
@@ -415,3 +319,4 @@ body {
     aspect-ratio: 390 / 844;
   }
 }
+
